@@ -1,2 +1,3 @@
 # basic2Dplatformer
-Spooky Scary Skeletons
+Just a basic platformer with 5 maps
+you can move and stuff, its pretty bare bones
