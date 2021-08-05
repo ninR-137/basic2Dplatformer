@@ -1,0 +1,19 @@
+JumpButton.png
+size: 640, 320
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+NJumpButton
+  rotate: false
+  xy: 0, 0
+  size: 320, 320
+  orig: 320, 320
+  offset: 0, 0
+  index: -1
+NJumpButtonPressed
+  rotate: false
+  xy: 320, 0
+  size: 320, 320
+  orig: 320, 320
+  offset: 0, 0
+  index: -1

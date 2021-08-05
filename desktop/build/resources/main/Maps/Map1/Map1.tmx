@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.4" tiledversion="1.4.3" orientation="orthogonal" renderorder="right-down" width="148" height="54" tilewidth="40" tileheight="40" infinite="0" nextlayerid="12" nextobjectid="68">
+ <imagelayer id="3" name="Ground">
+  <image source="Map1.png" width="5920" height="2160"/>
+ </imagelayer>
+ <objectgroup id="11" name="Pickables">
+  <object id="25" x="665.333" y="1270.67" width="80" height="80"/>
+  <object id="42" x="1599.39" y="1499.39" width="80" height="80"/>
+  <object id="43" x="2463.03" y="1199.39" width="80" height="80"/>
+  <object id="44" x="3150.91" y="953.939" width="80" height="80"/>
+  <object id="45" x="3581.21" y="617.576" width="80" height="80"/>
+  <object id="46" x="4060" y="1141.82" width="80" height="80"/>
+  <object id="47" x="3026.67" y="620.606" width="80" height="80"/>
+  <object id="48" x="2584.24" y="432.727" width="80" height="80"/>
+  <object id="49" x="3081.21" y="241.818" width="80" height="80"/>
+  <object id="50" x="2532.73" y="96.3636" width="80" height="80"/>
+  <object id="51" x="2026.67" y="411.515" width="80" height="80"/>
+  <object id="52" x="1702.42" y="214.545" width="80" height="80"/>
+  <object id="53" x="3608.48" y="293.333" width="80" height="80"/>
+  <object id="62" x="3920.61" y="447.879" width="80" height="80"/>
+  <object id="63" x="4399.39" y="675.152" width="80" height="80"/>
+  <object id="64" x="4738.79" y="466.061" width="80" height="80"/>
+  <object id="65" x="4808.48" y="1266.06" width="80" height="80"/>
+  <object id="66" x="5487.27" y="1487.27" width="80" height="80"/>
+  <object id="67" x="4793.33" y="1984.24" width="80" height="80"/>
+ </objectgroup>
+ <objectgroup id="10" name="DeathCollision">
+  <object id="22" x="836" y="2244" width="956" height="140"/>
+ </objectgroup>
+ <objectgroup id="2" name="CollisionLayer">
+  <object id="1" x="0" y="80">
+   <polygon points="0,0 84,104 100,128 480,-4 708,32 560,76 524,112 436,128 304,264 164,524 80,796 92,1048 192,1120 268,1208 337.333,1273.33 382.667,1282.67 625.333,1324 872,1432 930.667,1437.33 968,1497.33 910.667,1552 874.667,1705.33 869.333,1744 853.333,1797.33 826.667,1825.33 821.333,1910.67 794.667,2017.33 846.667,2077.33 849.333,2080 0,2080"/>
+  </object>
+  <object id="2" x="1781" y="2160">
+   <polygon points="0,0 -1,-107 -15,-133 -48,-249 -275,-419 -395,-440 -387,-492 -313,-524 -187,-502 -25,-536 40.3333,-630.667 289.667,-677.333 861.667,-844 1295,-1018.67 1435,-1032 1545.67,-1096 1571,-1169.33 1681.67,-1186.67 1772.33,-1337.33 1859,-1376 1931,-1133.33 2084.33,-973.333 2216.33,-772 2415,-745.333 2467,-864 2488.33,-1050.67 2404.33,-1232 2208.33,-1332 1969.67,-1432 1897.67,-1582.67 1867,-1670.67 1720.33,-1760 1867,-1750.67 2039,-1637.33 2208.33,-1581.33 2343,-1497.33 2427,-1414.67 2459,-1414.67 2604.33,-1386.67 2715,-1385.33 2795,-1296 2757.67,-1128 2887,-998.667 2901.67,-908 2932.33,-857.333 3143,-764 3031,-585.333 2587,-481.333 2227,-142.667 1641.67,-24 1632.33,-1.33333"/>
+  </object>
+  <object id="3" x="4501.33" y="2162.67">
+   <polygon points="0,0 62.6667,-25.3333 422.667,-101.333 720,-268 856,-442.667 1114.67,-580 1140,-584 1256,-970.667 1253.33,-1274.67 1082.67,-1504 857.333,-1653.33 797.333,-1820 809.333,-2061.33 677.333,-2081.33 850.667,-2118.67 957.333,-2053.33 992,-1881.33 1096,-1773.33 1246.67,-1698.67 1270.67,-1649.33 1418.67,-1653.33 1420,-4"/>
+  </object>
+ </objectgroup>
+ <objectgroup id="5" name="Spawn">
+  <object id="11" name="Spawn" x="412" y="1092" width="168" height="184"/>
+  <object id="12" name="EndSpawn" x="3348" y="2084" width="1204" height="84"/>
+ </objectgroup>
+ <objectgroup id="6" name="ConditionalCollision">
+  <object id="4" x="2897.33" y="749.333">
+   <polyline points="0,0 332,14.6667"/>
+  </object>
+  <object id="5" x="2365.33" y="546.667">
+   <polyline points="0,0 473.333,-5.33333"/>
+  </object>
+  <object id="7" x="1426.67" y="317.333">
+   <polyline points="0,0 560,-6.66667"/>
+  </object>
+  <object id="8" x="1998.67" y="521.333">
+   <polyline points="0,0 168,1.33333"/>
+  </object>
+  <object id="9" x="2246" y="178">
+   <polyline points="0,0 536,10"/>
+  </object>
+  <object id="10" x="2922" y="346">
+   <polyline points="0,0 406,-8"/>
+  </object>
+ </objectgroup>
+ <objectgroup id="7" name="Camera">
+  <object id="13" x="716" y="884" width="1044" height="1044">
+   <ellipse/>
+  </object>
+  <object id="14" x="3192" y="52" width="540" height="540">
+   <ellipse/>
+  </object>
+ </objectgroup>
+ <objectgroup id="8" name="Lights">
+  <object id="21" x="3136" y="-1528" width="408" height="280"/>
+ </objectgroup>
+ <objectgroup id="9" name="ParticleEmitters">
+  <object id="15" x="336" y="1456" width="128" height="112"/>
+  <object id="16" x="2048" y="1560" width="120" height="88"/>
+  <object id="17" x="3504" y="1088" width="88" height="112"/>
+  <object id="18" x="4632" y="1384" width="176" height="96"/>
+  <object id="19" x="4992" y="2080" width="88" height="72"/>
+  <object id="20" x="5768" y="1608" width="184" height="112"/>
+ </objectgroup>
+</map>

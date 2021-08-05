@@ -1,0 +1,19 @@
+StartButton.png
+size: 960, 68
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+TouchedToStart
+  rotate: false
+  xy: 0, 0
+  size: 480, 68
+  orig: 480, 68
+  offset: 0, 0
+  index: -1
+TouchToStart
+  rotate: false
+  xy: 480, 0
+  size: 480, 68
+  orig: 480, 68
+  offset: 0, 0
+  index: -1

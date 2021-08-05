@@ -1,0 +1,218 @@
+private final WorldManager.Maps SampleMap = new WorldManager.Maps(){
+
+        private World world;
+        private TiledMap tiledMap;
+        private Array<TiledMapImageLayer> Ground; //Optional if you have many Ground Elements on different layers
+
+        //Entities
+        private Player player;
+
+        //Particles and Lights
+        private RayHandler rayHandler;
+        private TiledObjectUtil.ParticleEffectMapLocation particleEffectMapLocation;
+
+        //Parallax Backgrounds and Foregrounds
+        private Array<TextureRegion> parallaxBackgrounds;
+        private TextureRegion borderColor;
+        private TextureRegion foregroundMap;
+        private CameraManager foregroundCamManager;
+        private float BackgroundOffset1, BackgroundOffset2, BackgroundOffset3, BackgroundOffset4; //Depends on how many Backgrounds available
+
+        //Hud and UI (controls are parameters for player, so they are needed even though it may not be used)
+        private Stage HudStage;
+        private JoyStick joyStick;
+        private JumpButton jumpButton;
+
+        //Pickable Objects
+        private TiledObjectUtil.PickableObjectsManager pickableObjectsManager;
+        @Override
+        public void create() {
+            //-----------------TiledMap setup----------------//
+            tiledMap = new TmxMapLoader().load("Maps/Map2/Map2.tmx");
+            Ground = new Array<>();
+            Ground.add((TiledMapImageLayer) tiledMap.getLayers().get("Ground"));
+            borderColor = new TextureRegion(App.assetManager.get("Textures/BlackBox32x32.png", Texture.class));
+
+            //--------------Box 2D world setup---------------//
+            world = new World(new Vector2(0, -12f), true); //Well keep it consistent
+            world.setContactListener(new MyContactListener());
+            TiledObjectUtil.parseSpawnObjectLayer(world, tiledMap.getLayers().get("Spawn").getObjects());
+            TiledObjectUtil.parseCollisionObjectLayer(world, tiledMap.getLayers().get("CollisionLayer").getObjects());
+
+            TiledObjectUtil.parseConditionalCollision(world, tiledMap.getLayers().get("ConditionalCollision").getObjects());
+            TiledObjectUtil.parseDeathCollision(world, tiledMap.getLayers().get("DeathCollision").getObjects());
+            //CameraManager.mapUpdated(tiledMap.getLayers().get("Camera").getObjects());
+            //Must be done in the render/update method from now on
+
+            //Basic structure for the TiledObjectUtil setup is Spawn, CollisionLayer, ConditionalCollision, DeathCollision, Camera
+            //-----------HudStage and Controls setup---------//
+            HudStage = new Stage(new StretchViewport(App.V_WIDTH, App.V_HEIGHT));
+            joyStick = new JoyStick();
+            jumpButton = new JumpButton();
+            HudStage.addActor(joyStick);
+            HudStage.addActor(jumpButton);
+            //------Entities and Camera Manager setup--------//
+            player = new Player(world, joyStick, jumpButton);
+            player.setSpawnX(TiledObjectUtil.playerSpawnX);
+            player.setSpawnY(TiledObjectUtil.playerSpawnY);
+            player.createChara();
+            //No need to setup Graphics Manager and B2DGraphicsCamera
+            //foregroundCamManager = new CameraManager(foregroundCam, player);
+            //foregroundCamManager.setLerpfactor(0.1f);
+            //--------RayHandler and Box2d Lights------------//
+            rayHandler = new RayHandler(world);
+            rayHandler.setAmbientLight(0.9f);
+            TiledObjectUtil.createLights(tiledMap.getLayers().get("Lights").getObjects(), rayHandler, 50, 100, 3f, Color.NAVY);
+
+            //---Parallax Backgrounds and Foreground Maps----//
+            foregroundMap = new TextureRegion(App.assetManager.get("Maps/Map2/ForeGroundMap.png", Texture.class));
+            parallaxBackgrounds = new Array<>();
+            parallaxBackgrounds.add(new TextureRegion(App.assetManager.get("Maps/Map2/Backgrounds/Mainbackground.png", Texture.class)));
+            parallaxBackgrounds.add(new TextureRegion(App.assetManager.get("Maps/Map2/Backgrounds/Background1.png", Texture.class)));
+            parallaxBackgrounds.add(new TextureRegion(App.assetManager.get("Maps/Map2/Backgrounds/Background2.png", Texture.class)));
+            parallaxBackgrounds.add(new TextureRegion(App.assetManager.get("Maps/Map2/Backgrounds/Background3.png", Texture.class)));
+            parallaxBackgrounds.add(new TextureRegion(App.assetManager.get("Maps/Map2/Backgrounds/Background4.png", Texture.class)));
+            //-----------Particle Effects and Pooling--------//
+            particleEffectMapLocation = new TiledObjectUtil.ParticleEffectMapLocation();
+            particleEffectMapLocation.parseParticleLocation(tiledMap.getLayers().get("ParticleEmitters").getObjects(),
+                    "Particles/RedBurst.p", "Textures");
+            //--------------Pickable Objects-----------------//
+            pickableObjectsManager = new TiledObjectUtil.PickableObjectsManager(world, tiledMap.getLayers().get("Pickables").getObjects());
+            pickableObjectsManager.createObjects();
+            //--------------Camera Positioning---------------//
+
+            created = true;
+        }
+
+        @Override
+        public void render() {
+            //Batch Set-Up
+            batch.setProjectionMatrix(cam.combined);
+            backgroundBatch.setProjectionMatrix(backgroundCam.combined);
+            foregroundBatch.setProjectionMatrix(foregroundCam.combined);
+
+            //Backgrounds
+            backgroundBatch.begin();
+            backgroundBatch.draw(parallaxBackgrounds.get(0), 0,0, backgroundCam.viewportWidth, backgroundCam.viewportHeight);
+            drawParallaxBackGround(parallaxBackgrounds.get(1), 0.1f, BackgroundOffset1);
+            drawParallaxBackGround(parallaxBackgrounds.get(2), 0.15f, BackgroundOffset2);
+            drawParallaxBackGround(parallaxBackgrounds.get(3), 0.2f, BackgroundOffset3);
+            drawParallaxBackGround(parallaxBackgrounds.get(4), 0.25f, BackgroundOffset4);
+
+            //drawParallaxMethod is a method from WorldManager.Maps
+            backgroundBatch.end();
+
+            //Main(Ground, Border, Entities, Particles)
+            batch.begin();
+            for(TiledMapImageLayer imageLayer : Ground) {
+                batch.draw(imageLayer.getTextureRegion(), imageLayer.getX(), imageLayer.getY());
+            }
+
+            //drawBorder(batch);
+
+            player.render(batch);
+            MyContactListener.playerGroundCollisionUpperBounds = 3;
+            MyContactListener.playerGroundCollisionLowerBounds = 0;
+            particleEffectMapLocation.renderParticles(batch);
+            //pickableObjects.render(batch);
+            pickableObjectsManager.renderObjects(batch);
+
+            drawBorder(batch);
+            batch.end();
+
+            //Lights
+            rayHandler.updateAndRender();
+            rayHandler.setCombinedMatrix(B2DCam);
+
+            //Foregrounds
+
+            foregroundBatch.begin();
+            foregroundBatch.draw(foregroundMap, 0, 0);
+            drawBorder(foregroundBatch);
+            foregroundBatch.end();
+
+
+            //Hud Stage
+            HudStage.draw();
+            //B2DR.render(world, B2DCam.combined);
+        }
+
+        @Override
+        public void update(float dt) {
+            //World Step
+            //Temporary fix
+            mapTransition();
+            world.step(dt, 6, 2);
+            MyContactListener.update();
+            checkPlayerDeath();
+
+            //Parallax calculations
+            BackgroundOffset1 += graphicsCameraManager.getDx();
+            BackgroundOffset2 += graphicsCameraManager.getDx();
+            BackgroundOffset3 += graphicsCameraManager.getDx();
+            BackgroundOffset4 += graphicsCameraManager.getDx();
+
+            if( - BackgroundOffset1 * 0.1f < - App.V_WIDTH || - BackgroundOffset1 * 0.1f > App.V_WIDTH) BackgroundOffset1 = 0;
+            if( - BackgroundOffset2 * 0.15f < - App.V_WIDTH || - BackgroundOffset2 * 0.15f > App.V_WIDTH) BackgroundOffset2 = 0;
+            if( - BackgroundOffset3 * 0.2f < - App.V_WIDTH || - BackgroundOffset3 * 0.2f > App.V_WIDTH) BackgroundOffset3 = 0;
+            if( - BackgroundOffset4 * 0.25f < - App.V_WIDTH || - BackgroundOffset4 * 0.25f > App.V_WIDTH) BackgroundOffset4 = 0;
+            //Entities calculations
+            player.update();
+            //Camera Manager Calculations
+            graphicsCameraManager.updateCameraRelativeToMap(false);
+            B2DDebugCamera.updateCameraRelativeToMap(true);
+            foregroundCamManager.updateCameraRelativeToMap(false);
+            //Hud Stage update
+            HudStage.act(Gdx.graphics.getDeltaTime());
+            Gdx.input.setInputProcessor(HudStage);
+
+            if(MyContactListener.CollectedBamboo){
+                bamboosCollected++;
+                MyContactListener.CollectedBamboo = false;
+            }
+        }
+
+        private void checkPlayerDeath(){
+            if(player.isPlayerDead()){
+                if(Gdx.input.isTouched()){
+                    player.createNewPlayer();
+                }
+            }
+        }
+
+
+        //Have to do it Every update now? Just why?
+        @Override
+        public void mapTransition() {
+            CameraManager.mapUpdated(tiledMap.getLayers().get("Camera").getObjects());
+            graphicsCameraManager = new CameraManager(cam, player);
+            B2DDebugCamera = new CameraManager(B2DCam, player);
+            foregroundCamManager = new CameraManager(foregroundCam, player);
+            foregroundCamManager.setLerpfactor(0.1f);
+        }
+
+        @Override
+        public void dispose() {
+            HudStage.dispose();
+            world.dispose();
+            tiledMap.dispose();
+            particleEffectMapLocation.dispose();
+            for(TiledMapImageLayer imageLayer : Ground){
+                imageLayer.getTextureRegion().getTexture().dispose();
+            }
+        }
+
+        public void drawBorder(Batch batch){
+            batch.draw(borderColor, Ground.get(0).getX() - 5920, Ground.get(0).getY(), 5920, 4320);
+            batch.draw(borderColor, Ground.get(0).getX() + 5920 - 20, Ground.get(0).getY(), 5920, 4320);
+            //------------------------------------------------------------------------------------------------------//
+            batch.draw(borderColor, Ground.get(0).getX(), Ground.get(0).getY() + 4320 - 20, 5920, 4320);
+            batch.draw(borderColor, Ground.get(0).getX(), Ground.get(0).getY() - 4320, 5920, 4320);
+            //-----------------------------------------------Corner-------------------------------------------------//
+            batch.draw(borderColor, Ground.get(0).getX() - 5920, Ground.get(0).getY() + 4320 - 20, 5920, 4320);
+            batch.draw(borderColor, Ground.get(0).getX() + 5920, Ground.get(0).getY() + 4320 - 20, 5920, 4320);
+            batch.draw(borderColor, Ground.get(0).getX() - 5920, Ground.get(0).getY() - 4320, 5920, 4320);
+            batch.draw(borderColor, Ground.get(0).getX() + 5920, Ground.get(0).getY() - 4320, 5920, 4320);
+        }
+    };
+}

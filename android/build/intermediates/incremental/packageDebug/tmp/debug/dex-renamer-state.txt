@@ -1,0 +1,4 @@
+#Sun Jul 04 01:19:29 CST 2021
+base.0=C\:\\Users\\ADMIN\\Documents\\2Dplatformer\\android\\build\\intermediates\\dex\\debug\\mergeDexDebug\\out\\classes.dex
+path.0=classes.dex
+renamed.0=classes.dex

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.4" tiledversion="1.4.3" orientation="orthogonal" renderorder="right-down" width="37" height="27" tilewidth="40" tileheight="40" infinite="0" nextlayerid="9" nextobjectid="13">
+ <imagelayer id="2" name="Ground">
+  <image source="Collision.png" width="1480" height="1080"/>
+ </imagelayer>
+ <objectgroup id="7" name="Camera"/>
+ <objectgroup id="3" name="Collision">
+  <object id="1" x="530" y="-2">
+   <polygon points="0,0 20,66 -184,186 -166,294 -224,414 -224,536 -258,430 -270,652 -312,530 -326,578 -370,582 -388,646 -530,732 -530,942 -438,904 -340,918 -250,888 -80,884 -54,898 -6,930 436,942 516,892 618,890 740,926 950,886 952,818 858,782 850,706 650,598 630,524 628,578 582,408 494,356 470,258 372,228 354,136 456,0 948,2 954,1084 -532,1084 -530,2"/>
+  </object>
+  <object id="2" x="486" y="-8">
+   <polygon points="0,0 96,-24 520,-14 590,32 596,-78 -76,-76"/>
+  </object>
+ </objectgroup>
+ <objectgroup id="4" name="Lights">
+  <object id="3" x="694" y="-6" width="60" height="58"/>
+ </objectgroup>
+ <objectgroup id="5" name="Particles">
+  <object id="5" x="268" y="990" width="54" height="32"/>
+  <object id="6" x="764" y="994" width="44" height="28"/>
+  <object id="7" x="1278" y="990" width="44" height="24"/>
+ </objectgroup>
+ <objectgroup id="6" name="Spawn">
+  <object id="9" name="Spawn" x="40" y="776" width="72" height="58"/>
+ </objectgroup>
+ <objectgroup id="8" name="TextLayer">
+  <object id="11" name="Finished" x="490.909" y="333.333" width="424.242" height="69.697"/>
+  <object id="12" name="Bamboo" x="500" y="439.394" width="418.182" height="87.8788"/>
+ </objectgroup>
+</map>
