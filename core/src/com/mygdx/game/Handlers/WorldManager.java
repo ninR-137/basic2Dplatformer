@@ -797,8 +797,11 @@ public class WorldManager {
             HudStage = new Stage(new StretchViewport(App.V_WIDTH, App.V_HEIGHT));
             joyStick = new JoyStick();
             jumpButton = new JumpButton();
-            HudStage.addActor(joyStick);
-            HudStage.addActor(jumpButton);
+            // 8/06/2021 change (forgot to do check for mobile controls)
+            if(PLAY_SCREEN.MobileControls){
+                HudStage.addActor(joyStick);
+                HudStage.addActor(jumpButton);
+            }
 
             //------Entities and Camera Manager setup--------//
             player = new Player(world, joyStick, jumpButton);
